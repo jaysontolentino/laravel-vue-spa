@@ -1,23 +1,51 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import LoginPage from './../pages/auth/Login.vue'
-import RegisterPage from './../pages/auth/Register.vue'
-import WelcomePage from './../pages/Welcome.vue'
 
 const routes = [
     {
+        path: '/',
+        name: 'home',
+        component: () => import('./../views/Home.vue'),
+        meta: {
+            layout: 'DefaultLayout',
+            requiredAuth: false
+        }
+    },
+    {
         path: '/login',
         name: 'login',
-        component: LoginPage,
+        component: () => import('./../views/Login.vue'),
+        meta: {
+            layout: 'AuthLayout',
+            requiredAuth: false
+        }
     },
     {
         path: '/register',
         name: 'register',
-        component: RegisterPage
+        component: () => import('./../views/Register.vue'),
+        meta: {
+            layout: 'AuthLayout',
+            requiredAuth: false
+        }
     },
     {
-        path: '/',
+        path: '/welcome',
         name: 'welcome',
-        component: WelcomePage
+        component: () => import('./../views/Welcome.vue'),
+        meta: {
+            layout: 'AppLayout',
+            requiredAuth: true
+        }
+    },
+    {
+        path: '/users',
+        name: 'users',
+        component: () => import('./../views/UserList.vue'),
+        meta: {
+            layout: 'AppLayout',
+            requiredAuth: true,
+            permission: 'admin'
+        }
     },
 
 ]

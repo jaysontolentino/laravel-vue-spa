@@ -7,7 +7,7 @@ import Input from './ui/Input.vue'
 import Button from './ui/Button.vue'
 import Alert from './ui/Alert.vue'
 
-const { user, error, loading } = storeToRefs(useAuthStore())
+const { error, loading } = storeToRefs(useAuthStore())
 const { login } = useAuthStore()
 
 const formData = ref({
@@ -19,7 +19,7 @@ const formData = ref({
 </script>
 
 <template>
-    <div class="w-full bg-white border rounded py-6 px-8 md:w-[380px]">
+    <div class="w-full bg-slate-100 border rounded py-6 px-8 md:w-[380px]">
 
         <h1 class="text-center text-2xl mb-6">Sign In</h1>
 

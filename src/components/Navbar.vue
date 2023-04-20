@@ -1,22 +1,38 @@
 <script setup>
-import {computed} from 'vue'
 import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { useAuthStore } from '../store/auth';
 
 const route = useRoute()
-
-const currentPath = computed(() => route.name)
+const { isAdmin } = storeToRefs(useAuthStore())
 
 </script>
 
 <template>
-    <nav class="w-full bg-white/50 backdrop-blur py-5 px-8 shadow-sm border-b-2 border-slate-200 fixed top-0 left-0">
+    <nav class="w-full bg-white/90 backdrop-blur py-3 px-8 fixed top-0 left-0">
         <div class="container mx-auto">
             <div class="flex justify-between">
-                <RouterLink to='/' class="text-xl text-blue-500 md:text-lg">Laravue</RouterLink>
+
+                <RouterLink to="/" class="text-xl text-blue-500 font-medium">
+                    Laravel App
+                </RouterLink>
 
                 <div class="flex gap-2">
-                    <RouterLink v-if="currentPath === 'register' || currentPath === 'welcome'" to='/login' class="bg-blue-500 text-white py-2 px-4 rounded">Login</RouterLink>
-                    <RouterLink v-if="currentPath === 'login'" to='/register' class="bg-blue-500 text-white py-2 px-4 rounded">Register</RouterLink>
+
+                    <RouterLink 
+                        v-if="isAdmin && route.name === 'welcome'"
+                        to='/users' 
+                        class="bg-blue-500 text-white font-medium py-2 px-4 rounded hover:bg-blue-400">
+                        View Records
+                    </RouterLink>
+
+                    <button
+                        v-if="!isAdmin"
+                        class="bg-blue-500 text-white font-medium py-2 px-4 rounded hover:bg-blue-400">
+                        Unsubscribe
+                    </button>
+
+                    <button class="bg-blue-500 text-white font-medium py-2 px-4 rounded hover:bg-blue-400">Logout</button>
                 </div>
                 
             </div>

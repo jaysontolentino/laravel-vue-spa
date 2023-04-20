@@ -14,5 +14,7 @@ const app = createApp(App)
 
 app.use(pinia)
 app.use(router)
-app.component('v-icon', OhVueIcon)
+
+app.component('Icon', OhVueIcon)
+
 app.mount('#app')

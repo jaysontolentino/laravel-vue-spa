@@ -22,7 +22,7 @@ const formData = ref({
 </script>
 
 <template>
-    <div class="w-full bg-white border rounded py-6 px-8 md:w-[380px]">
+    <div class="w-full bg-slate-100 border rounded py-6 px-8 md:w-[380px]">
 
         <h1 class="text-center text-2xl mb-6">Sign Up</h1>
 

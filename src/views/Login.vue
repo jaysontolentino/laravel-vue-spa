@@ -1,9 +1,9 @@
 <script setup>
-import RegisterForm from './../../components/RegisterForm.vue'
+import LoginForm from '../components/LoginForm.vue'
 </script>
 
 <template>
     <div class="w-full flex justify-center items-center">
-        <RegisterForm />
+        <LoginForm />
     </div>
 </template>

@@ -10,10 +10,10 @@ const props = defineProps({
 
 const classObj = computed(() => {
     return {
-        'w-full bg-blue-500 text-white py-2 px-4 rounded': props.size === 'full',
-        'bg-blue-500 text-white py-1 px-2 rounded': props.size === 'sm',
-        'bg-blue-500 text-white py-2 px-4 rounded': props.size === 'md',
-        'bg-blue-500 text-white py-3 px-6 rounded': props.size === 'lg',
+        'w-full bg-blue-500 text-white py-2 px-4 rounded font-medium hover:bg-blue-400': props.size === 'full',
+        'bg-blue-500 text-white py-1 px-2 rounded font-medium hover:bg-blue-400': props.size === 'sm',
+        'bg-blue-500 text-white py-2 px-4 rounded font-medium hover:bg-blue-400': props.size === 'md',
+        'bg-blue-500 text-white py-3 px-6 rounded font-medium hover:bg-blue-400': props.size === 'lg',
     }
 })
 
@@ -21,7 +21,7 @@ const classObj = computed(() => {
 
 <template>
     <button :class="classObj">
-        <v-icon v-if="isLoading" name="fa-spinner" animation="spin-pulse" />
+        <Icon v-if="isLoading" name="fa-spinner" animation="spin-pulse" />
         <slot />
     </button>
 </template>
