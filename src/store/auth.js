@@ -4,15 +4,12 @@ import axios from '../utils/axios'
 export const useAuthStore = defineStore({
     id: 'auth',
     state: () => ({
-        user: {
-            username: 'jaysbt',
-            role: 'admin'
-        },
+        user: null,
         error: null,
         loading: false
     }),
     getters: {
-        getUser(state) {
+        authUser(state) {
             return state.user
         },
         isAdmin(state) {
@@ -36,6 +33,8 @@ export const useAuthStore = defineStore({
                 }
 
                 this.error = null
+
+                this.router.push('/welcome')
             } catch (error) {
                 this.error = error.response.data
                 
@@ -64,6 +63,25 @@ export const useAuthStore = defineStore({
                 
             } finally {
                 this.loading = false
+            }
+        },
+        async fetchAuthUser() {
+            try {
+                
+                await axios.get('sanctum/csrf-cookie')
+                const response = await axios.get('api/auth-user')
+                
+                const {roles, user} = response.data
+
+                this.user = {
+                    username: user.username,
+                    email: user.email,
+                    role: roles[0]
+                }
+
+                this.error = null
+            } catch (error) {
+                //this.error = error.response.data
             }
         }
     }

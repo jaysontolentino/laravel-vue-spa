@@ -13,7 +13,8 @@
     "oh-vue-icons": "^1.0.0-rc3",
     "pinia": "^2.0.34",
     "vue": "^3.2.47",
-    "vue-router": "4"
+    "vue-router": "4",
+    "vue3-easy-data-table": "^1.5.42"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",

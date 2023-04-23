@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '../store/auth'
 
 const routes = [
     {
@@ -7,7 +8,7 @@ const routes = [
         component: () => import('./../views/Home.vue'),
         meta: {
             layout: 'DefaultLayout',
-            requiredAuth: false
+            requiresAuth: false
         }
     },
     {
@@ -16,7 +17,7 @@ const routes = [
         component: () => import('./../views/Login.vue'),
         meta: {
             layout: 'AuthLayout',
-            requiredAuth: false
+            requiresAuth: false
         }
     },
     {
@@ -25,7 +26,7 @@ const routes = [
         component: () => import('./../views/Register.vue'),
         meta: {
             layout: 'AuthLayout',
-            requiredAuth: false
+            requiresAuth: false
         }
     },
     {
@@ -34,7 +35,7 @@ const routes = [
         component: () => import('./../views/Welcome.vue'),
         meta: {
             layout: 'AppLayout',
-            requiredAuth: true
+            requiresAuth: true
         }
     },
     {
@@ -43,14 +44,41 @@ const routes = [
         component: () => import('./../views/UserList.vue'),
         meta: {
             layout: 'AppLayout',
-            requiredAuth: true,
+            requiresAuth: true,
             permission: 'admin'
         }
     },
 
 ]
 
-export const router = createRouter({
+const router = createRouter({
     history: createWebHistory(),
     routes
 })
+
+router.beforeEach(async (to, from, next) => {
+
+    const {fetchAuthUser, authUser } = useAuthStore()
+
+    await fetchAuthUser()
+
+    const user = authUser
+
+    console.log('auth uer -> ', user)
+
+    if((to.path === '/login' || to.path === '/register') && user) {
+        return next({path: '/welcome'})
+    }
+
+    if(to.matched.some(rec => rec.meta.requiresAuth)) {
+
+        if(!user) {
+            return next({path: '/login'})
+        }
+    } 
+    
+    next()
+
+})
+
+export default router
