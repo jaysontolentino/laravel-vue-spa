@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from '../utils/axios'
+import axios, {privateAxios} from '../utils/axios'
 import Cookies from 'js-cookie'
 
 export const useAuthStore = defineStore({
@@ -7,14 +7,18 @@ export const useAuthStore = defineStore({
     state: () => ({
         user: null,
         error: null,
-        loading: false
+        loading: false,
+        logoutLoading: false
     }),
     getters: {
         authUser(state) {
             return state.user
         },
         isAdmin(state) {
-            return state.user.role === 'admin'
+
+            if(state.user) return state.user.role === 'admin'
+            
+            return false
         }
     },
     actions: {
@@ -22,7 +26,7 @@ export const useAuthStore = defineStore({
             try {
 
                 this.loading = true
-                await axios.get('http://localhost:8000/sanctum/csrf-cookie')
+                await axios.get(`${import.meta.env.VITE_SERVER_URL}/sanctum/csrf-cookie`)
                 const response = await axios.post('auth/login', data)
                 
                 const {roles, user, token} = response.data
@@ -50,7 +54,7 @@ export const useAuthStore = defineStore({
             try {
                 
                 this.loading = true
-                await axios.get('http://localhost:8000/sanctum/csrf-cookie')
+                await axios.get(`${import.meta.env.VITE_SERVER_URL}/sanctum/csrf-cookie`)
                 const response = await axios.post('auth/register', data)
                 
                 const {roles, user} = response.data
@@ -74,12 +78,39 @@ export const useAuthStore = defineStore({
                 this.loading = false
             }
         },
+        async logout() {
+
+            try {
+
+                console.log('Token -> ', privateAxios.defaults)
+                
+                this.logoutLoading = true
+                await axios.post('auth/logout', {}, {
+                    headers: {
+                        Authorization: 'Bearer ' + Cookies.get('token')
+                    }
+                })
+
+                this.user = null
+                this.error = null
+
+                Cookies.remove('token', {path: '/'})
+
+                this.router.push('/')
+
+            } catch (error) {
+                this.error = error.response.data
+                
+            } finally {
+                this.logoutLoading = false
+            }
+        },
         async fetchAuthUser() {
             try {
                 
-                const response = await axios.get('auth-user')
+                const response = await privateAxios.get('auth-user')
                 
-                const {roles, user, token} = response.data
+                const {roles, user} = response.data
 
                 this.user = {
                     username: user.username,

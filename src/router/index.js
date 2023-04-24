@@ -66,8 +66,6 @@ router.beforeEach(async (to, from, next) => {
         user = useAuthStore().user
     })
 
-    console.log('auth uer -> ', user)
-
     if((to.path === '/login' || to.path === '/register') && user) {
         return next({path: '/welcome'})
     }

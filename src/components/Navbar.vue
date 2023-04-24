@@ -5,6 +5,7 @@ import { useAuthStore } from '../store/auth';
 
 const route = useRoute()
 const { isAdmin } = storeToRefs(useAuthStore())
+const {logout} = useAuthStore()
 
 </script>
 
@@ -32,7 +33,7 @@ const { isAdmin } = storeToRefs(useAuthStore())
                         Unsubscribe
                     </button>
 
-                    <button class="bg-blue-500 text-white font-medium py-2 px-4 rounded hover:bg-blue-400">Logout</button>
+                    <button @click="logout" class="bg-blue-500 text-white font-medium py-2 px-4 rounded hover:bg-blue-400">Logout</button>
                 </div>
                 
             </div>

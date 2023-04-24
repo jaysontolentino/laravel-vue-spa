@@ -3,7 +3,14 @@ import Cookies from 'js-cookie'
 
 axios.defaults.withCredentials = true
 axios.defaults.headers.common['Content-Type'] = 'application/json'
-axios.defaults.baseURL = 'http://localhost:8000/api'
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + Cookies.get('token')
+axios.defaults.baseURL = `${import.meta.env.VITE_SERVER_URL}/api`
+
+const token = Cookies.get('token')
+
+export const privateAxios = axios.create({
+    headers: {
+        Authorization: `Bearer ${token}`,
+    }
+})
 
 export default axios

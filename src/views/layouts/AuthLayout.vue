@@ -6,7 +6,7 @@ const route = useRoute()
 </script>
 
 <template>
-    <div class="w-screen h-screen bg-gradient-to-r from-cyan-500 to-blue-500 py-4 px-8">
+    <div class="w-screen min-h-screen h-full bg-gradient-to-r from-cyan-500 to-blue-500 py-4 px-8">
         <nav class="flex justify-between">
             <RouterLink to="/" class="text-xl text-white font-medium">Laravel App</RouterLink>
 
