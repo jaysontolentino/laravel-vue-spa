@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from '../utils/axios'
+import Cookies from 'js-cookie'
 
 export const useAuthStore = defineStore({
     id: 'auth',
@@ -21,10 +22,10 @@ export const useAuthStore = defineStore({
             try {
 
                 this.loading = true
-                await axios.get('sanctum/csrf-cookie')
-                const response = await axios.post('api/auth/login', data)
+                await axios.get('http://localhost:8000/sanctum/csrf-cookie')
+                const response = await axios.post('auth/login', data)
                 
-                const {roles, user} = response.data
+                const {roles, user, token} = response.data
 
                 this.user = {
                     username: user.username,
@@ -33,6 +34,8 @@ export const useAuthStore = defineStore({
                 }
 
                 this.error = null
+
+                Cookies.set('token', token)
 
                 this.router.push('/welcome')
             } catch (error) {
@@ -43,11 +46,12 @@ export const useAuthStore = defineStore({
             }
         },
         async register(data) {
+
             try {
                 
                 this.loading = true
-                await axios.get('sanctum/csrf-cookie')
-                const response = await axios.post('api/auth/register', data)
+                await axios.get('http://localhost:8000/sanctum/csrf-cookie')
+                const response = await axios.post('auth/register', data)
                 
                 const {roles, user} = response.data
 
@@ -58,6 +62,11 @@ export const useAuthStore = defineStore({
                 }
 
                 this.error = null
+
+                Cookies.set('token', token)
+
+                this.router.push('/welcome')
+
             } catch (error) {
                 this.error = error.response.data
                 
@@ -68,10 +77,9 @@ export const useAuthStore = defineStore({
         async fetchAuthUser() {
             try {
                 
-                await axios.get('sanctum/csrf-cookie')
-                const response = await axios.get('api/auth-user')
+                const response = await axios.get('auth-user')
                 
-                const {roles, user} = response.data
+                const {roles, user, token} = response.data
 
                 this.user = {
                     username: user.username,
@@ -80,8 +88,9 @@ export const useAuthStore = defineStore({
                 }
 
                 this.error = null
+
             } catch (error) {
-                //this.error = error.response.data
+               
             }
         }
     }

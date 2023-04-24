@@ -7,7 +7,7 @@ import Input from './ui/Input.vue'
 import Button from './ui/Button.vue'
 import Alert from './ui/Alert.vue'
 
-const { user, error, loading } = storeToRefs(useAuthStore())
+const { error, loading } = storeToRefs(useAuthStore())
 const { register } = useAuthStore()
 
 const formData = ref({

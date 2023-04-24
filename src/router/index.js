@@ -58,11 +58,13 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
 
-    const {fetchAuthUser, authUser } = useAuthStore()
+    let user = null
 
-    await fetchAuthUser()
+    const {fetchAuthUser } = useAuthStore()
 
-    const user = authUser
+    await fetchAuthUser().then(() => {
+        user = useAuthStore().user
+    })
 
     console.log('auth uer -> ', user)
 

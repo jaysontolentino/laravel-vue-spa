@@ -7,8 +7,8 @@ import Input from './ui/Input.vue'
 import Button from './ui/Button.vue'
 import Alert from './ui/Alert.vue'
 
-const { error, loading } = storeToRefs(useAuthStore())
-const { login } = useAuthStore()
+const {  authUser, error, loading } = storeToRefs(useAuthStore())
+const { fetchAuthUser, login } = useAuthStore()
 
 const formData = ref({
     username: '',
@@ -41,5 +41,11 @@ const formData = ref({
 
             <Alert v-if="error" type="error">{{ error.message }}</Alert>
         </form>
+
+        <button @click="fetchAuthUser">Get current user</button>
+
+        <pre>
+            {{ authUser }}
+        </pre>
     </div>
 </template>
