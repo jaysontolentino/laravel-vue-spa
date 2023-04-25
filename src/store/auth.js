@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios, {privateAxios} from '../utils/axios'
+import axios, {useAuthAxios} from '../utils/axios'
 import Cookies from 'js-cookie'
 
 export const useAuthStore = defineStore({
@@ -50,14 +50,14 @@ export const useAuthStore = defineStore({
             }
         },
         async register(data) {
-
+            console.log('register data ', data)
             try {
                 
                 this.loading = true
                 await axios.get(`${import.meta.env.VITE_SERVER_URL}/sanctum/csrf-cookie`)
                 const response = await axios.post('auth/register', data)
                 
-                const {roles, user} = response.data
+                const {roles, user, token} = response.data
 
                 this.user = {
                     username: user.username,
@@ -80,23 +80,19 @@ export const useAuthStore = defineStore({
         },
         async logout() {
 
-            try {
+            const authAxios = useAuthAxios()
 
-                console.log('Token -> ', privateAxios.defaults)
+            try {
                 
                 this.logoutLoading = true
-                await axios.post('auth/logout', {}, {
-                    headers: {
-                        Authorization: 'Bearer ' + Cookies.get('token')
-                    }
-                })
+                await authAxios.post('auth/logout')
 
                 this.user = null
                 this.error = null
 
                 Cookies.remove('token', {path: '/'})
 
-                this.router.push('/')
+                this.router.push({ name: 'home' })
 
             } catch (error) {
                 this.error = error.response.data
@@ -106,9 +102,12 @@ export const useAuthStore = defineStore({
             }
         },
         async fetchAuthUser() {
+
+            const authAxios = useAuthAxios()
+
             try {
                 
-                const response = await privateAxios.get('auth-user')
+                const response = await authAxios.get('auth-user')
                 
                 const {roles, user} = response.data
 

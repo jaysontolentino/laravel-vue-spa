@@ -6,9 +6,9 @@ import router from './router'
 import App from './App.vue'
 import Vue3EasyDataTable from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
-import { IoSyncOutline, FaSpinner,FaRegularEdit, FaRegularTrashAlt  } from 'oh-vue-icons/icons'
+import { IoSyncOutline, FaSpinner,FaRegularEdit, FaRegularTrashAlt, FaUserPlus  } from 'oh-vue-icons/icons'
 
-addIcons(IoSyncOutline, FaSpinner, FaRegularEdit, FaRegularTrashAlt )
+addIcons(IoSyncOutline, FaSpinner, FaRegularEdit, FaRegularTrashAlt, FaUserPlus )
 
 const pinia = createPinia()
 pinia.use(({ store }) => {

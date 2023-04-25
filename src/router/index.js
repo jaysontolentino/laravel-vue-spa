@@ -41,7 +41,17 @@ const routes = [
     {
         path: '/users',
         name: 'users',
-        component: () => import('./../views/UserList.vue'),
+        component: () => import('./../views/users/UserList.vue'),
+        meta: {
+            layout: 'AppLayout',
+            requiresAuth: true,
+            permission: 'admin'
+        }
+    },
+    {
+        path: '/add-user',
+        name: 'add-user',
+        component: () => import('./../views/users/AddUser.vue'),
         meta: {
             layout: 'AppLayout',
             requiresAuth: true,
@@ -66,14 +76,18 @@ router.beforeEach(async (to, from, next) => {
         user = useAuthStore().user
     })
 
-    if((to.path === '/login' || to.path === '/register') && user) {
-        return next({path: '/welcome'})
+    if((to.name === 'login' || to.name === 'register') && user) {
+        return next({name: 'welcome'})
     }
 
     if(to.matched.some(rec => rec.meta.requiresAuth)) {
 
         if(!user) {
-            return next({path: '/login'})
+            return next({name: 'login'})
+        }
+
+        if(to.name === 'users' && (to.meta.permission !== user.role)) {
+            return next({ name: 'welcome' })
         }
     } 
     
