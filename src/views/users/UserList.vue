@@ -79,7 +79,7 @@ const onItemUpdate = (item) => {
 
             <RouterLink 
             class="py-2 px-3 bg-emerald-500 text-white font-medium rounded-md hover:bg-emerald-400" 
-            to="add-user">
+            :to="{ name: 'add-user' }">
                 <Icon name="fa-user-plus"  />
                 New User
             </RouterLink>
@@ -132,14 +132,14 @@ const onItemUpdate = (item) => {
                                 scale="0.8"
                                 />
                             </button>
-                            <button 
+                            <RouterLink 
                             class="border-2 border-blue-300 p-1 rounded text-blue-500 hover:bg-blue-200"
-                            @click="onItemUpdate(item)">
+                            :to="{ name: 'update-user', params: { id: item.id }}">
                                 <Icon 
                                 name="fa-regular-edit"
                                 scale="0.8"
                                 />
-                            </button>
+                            </RouterLink>
                         </div>
                     </template>
                 </DataTable>

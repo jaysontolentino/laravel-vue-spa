@@ -6,7 +6,13 @@ export const useUsersStore = defineStore({
     state: () => ({
         data: [],
         loading: false,
-        error: null
+        addUserLoading: false,
+        getUserLoading: false,
+        updateUserLoading: false,
+        error: null,
+        addUserError: null,
+        getUserError: null,
+        updateUserError: null
     }),
     getters: {
         usersCount(state) {
@@ -24,8 +30,6 @@ export const useUsersStore = defineStore({
 
                 const response = await axios.get(`users?include=roles&${params}`)
 
-                console.log(response.data)
-
                 this.data = response.data
                 this.error = null
             } catch (error) {
@@ -33,6 +37,60 @@ export const useUsersStore = defineStore({
             } finally {
                 this.loading = false
             }
-        }
+        },
+        async getUser(id) {
+            
+            const axios = useAuthAxios()
+
+            try {
+                this.getUserLoading = true
+
+                const response = await axios.get(`users/${id}`)
+
+                this.getUserError = null
+
+                return response
+
+            } catch (error) {
+                this.getUserError = {errors: [error.message]}
+                throw error
+            } finally {
+                this.getUserLoading = false
+            }
+        },
+        async addUser(data) {
+
+            const axios = useAuthAxios()
+
+            try {
+                this.addUserLoading = true
+
+                await axios.post('users', data)
+
+                this.router.push({ name: 'users' })
+                this.addUserError = null
+            } catch (error) {
+                this.addUserError = error.response.data
+            } finally {
+                this.addUserLoading = false
+            }
+        },
+        async updateUser(id, data) {
+
+            const axios = useAuthAxios()
+
+            try {
+                this.updateUserLoading = true
+
+                await axios.put(`users/${id}`, data)
+
+                this.router.push({ name: 'users' })
+                this.updateUserError = null
+            } catch (error) {
+                this.updateUserError = error.response.data
+            } finally {
+                this.updateUserLoading = false
+            }
+        },
     }
 })

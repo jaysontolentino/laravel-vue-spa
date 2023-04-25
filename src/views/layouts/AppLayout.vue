@@ -9,7 +9,7 @@ import Navbar from './../../components/Navbar.vue'
     <div class="w-screen min-h-screen h-full bg-gradient-to-r from-cyan-500 to-blue-500 py-4 px-8">
         
         <section class="container mx-auto mt-32">
-
+            
             <slot />
             
         </section>

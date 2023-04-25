@@ -49,7 +49,7 @@ const routes = [
         }
     },
     {
-        path: '/add-user',
+        path: '/users/add',
         name: 'add-user',
         component: () => import('./../views/users/AddUser.vue'),
         meta: {
@@ -58,6 +58,16 @@ const routes = [
             permission: 'admin'
         }
     },
+    {
+        path: '/users/:id',
+        name: 'update-user',
+        component: () => import('./../views/users/EditUser.vue'),
+        meta: {
+            layout: 'AppLayout',
+            requiresAuth: true,
+            permission: 'admin'
+        }
+    }
 
 ]
 
@@ -86,7 +96,7 @@ router.beforeEach(async (to, from, next) => {
             return next({name: 'login'})
         }
 
-        if(to.name === 'users' && (to.meta.permission !== user.role)) {
+        if(to.path.includes('users/') && (to.meta.permission !== user.role)) {
             return next({ name: 'welcome' })
         }
     } 

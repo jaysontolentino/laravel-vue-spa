@@ -25,7 +25,7 @@ const signOut = async () => {
                 <div class="flex gap-2">
 
                     <RouterLink 
-                        v-if="isAdmin && route.name === 'welcome'"
+                        v-if="isAdmin && route.name !== 'users'"
                         to='/users' 
                         class="bg-blue-500 text-white font-medium py-2 px-4 rounded hover:bg-blue-400">
                         View Records
