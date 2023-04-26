@@ -67,6 +67,10 @@ const routes = [
             requiresAuth: true,
             permission: 'admin'
         }
+    },{
+        path: '/:pathMatch(.*)*',
+        name: 'not-found',
+        component: () => import('./../views/NotFound.vue'),
     }
 
 ]
@@ -96,7 +100,7 @@ router.beforeEach(async (to, from, next) => {
             return next({name: 'login'})
         }
 
-        if(to.path.includes('users/') && (to.meta.permission !== user.role)) {
+        if(to.path.includes('/users') && (to.meta.permission !== user.role)) {
             return next({ name: 'welcome' })
         }
     } 

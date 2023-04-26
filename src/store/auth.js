@@ -50,7 +50,6 @@ export const useAuthStore = defineStore({
             }
         },
         async register(data) {
-            console.log('register data ', data)
             try {
                 
                 this.loading = true
@@ -89,9 +88,7 @@ export const useAuthStore = defineStore({
 
                 this.user = null
                 this.error = null
-
                 Cookies.remove('token', {path: '/'})
-
                 this.router.push({ name: 'home' })
 
             } catch (error) {

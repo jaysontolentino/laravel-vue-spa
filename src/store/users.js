@@ -9,10 +9,12 @@ export const useUsersStore = defineStore({
         addUserLoading: false,
         getUserLoading: false,
         updateUserLoading: false,
+        deleteUserLoading: false,
         error: null,
         addUserError: null,
         getUserError: null,
-        updateUserError: null
+        updateUserError: null,
+        deleteUserError: null,
     }),
     getters: {
         usersCount(state) {
@@ -27,9 +29,7 @@ export const useUsersStore = defineStore({
 
             try {
                 this.loading = true
-
                 const response = await axios.get(`users?include=roles&${params}`)
-
                 this.data = response.data
                 this.error = null
             } catch (error) {
@@ -44,13 +44,10 @@ export const useUsersStore = defineStore({
 
             try {
                 this.getUserLoading = true
-
                 const response = await axios.get(`users/${id}`)
-
                 this.getUserError = null
 
                 return response
-
             } catch (error) {
                 this.getUserError = {errors: [error.message]}
                 throw error
@@ -64,9 +61,7 @@ export const useUsersStore = defineStore({
 
             try {
                 this.addUserLoading = true
-
                 await axios.post('users', data)
-
                 this.router.push({ name: 'users' })
                 this.addUserError = null
             } catch (error) {
@@ -81,15 +76,27 @@ export const useUsersStore = defineStore({
 
             try {
                 this.updateUserLoading = true
-
                 await axios.put(`users/${id}`, data)
-
                 this.router.push({ name: 'users' })
                 this.updateUserError = null
             } catch (error) {
                 this.updateUserError = error.response.data
             } finally {
                 this.updateUserLoading = false
+            }
+        },
+        async deleteUser(id) {
+
+            const axios = useAuthAxios()
+
+            try {
+                this.deleteUserLoading = true
+                await axios.delete(`users/${id}`)
+                this.deleteUserError = null
+            } catch (error) {
+                this.deleteUserError = error.response.data
+            } finally {
+                this.deleteUserLoading = false
             }
         },
     }

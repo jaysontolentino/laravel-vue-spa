@@ -1,0 +1,1 @@
+import{_ as e}from"./RegisterForm-cfb54e2d.js";import{o as t,c as r,b as s}from"./index-0d440acb.js";import"./Alert-82e7b876.js";import"./Button-b9c67bb3.js";const o={class:"w-full flex justify-center items-center"},f={__name:"Register",setup(c){return(a,_)=>(t(),r("div",o,[s(e)]))}};export{f as default};

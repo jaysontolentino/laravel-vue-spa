@@ -5,8 +5,8 @@ import Alert from '../../components/ui/Alert.vue'
 import Input from '../../components/ui/Input.vue'
 import { useUsersStore } from '../../store/users'
 
-const { data, loading, error } = storeToRefs(useUsersStore())
-const { loadUsers } = useUsersStore()
+const { data, loading, error, deleteUserError, deleteUserLoading } = storeToRefs(useUsersStore())
+const { loadUsers, deleteUser } = useUsersStore()
 
 const searchValue = ref('')
 const itemsSelected = ref([])
@@ -60,13 +60,15 @@ const onDeleteButton = () => {
     console.log(itemsSelected.value)
 }
 
-const onItemDelete = (item) => {
-    console.log('Deleting...', item)
+const onItemDelete = async ({id}) => {
+    const confirmed = confirm('Are you sure?')
+
+    if(confirmed) {
+        await deleteUser(id)
+        loadFromServer()
+    }
 }
 
-const onItemUpdate = (item) => {
-    console.log('Updating...', item)
-}
 </script>
 
 <template>
@@ -125,7 +127,8 @@ const onItemUpdate = (item) => {
 
                             <button 
                             v-if="item.roles[0].name === 'User'"
-                            class="border-2 border-red-300 p-1 rounded text-red-500 hover:bg-red-200" 
+                            class="border-2 border-red-300 p-1 rounded text-red-500 hover:bg-red-200 disabled:border-gray-300 disabled:text-gray-500 disabled:hover:bg-gray-200 disabled:cursor-wait" 
+                            :disabled="deleteUserLoading"
                             @click="onItemDelete(item)">
                                 <Icon 
                                 name="fa-regular-trash-alt"

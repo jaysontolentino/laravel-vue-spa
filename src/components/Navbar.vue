@@ -4,11 +4,16 @@ import { storeToRefs } from 'pinia'
 import { useAuthStore } from '../store/auth';
 
 const route = useRoute()
-const { isAdmin } = storeToRefs(useAuthStore())
+const { isAdmin, user } = storeToRefs(useAuthStore())
 const {logout} = useAuthStore()
 
 const signOut = async () => {
     await logout()
+}
+
+const unsubscribe = () => {
+    // Do nothing
+    alert('Successfully unsubscribed!')
 }
 
 </script>
@@ -32,8 +37,9 @@ const signOut = async () => {
                     </RouterLink>
 
                     <button
-                        v-if="!isAdmin"
-                        class="bg-blue-500 text-white font-medium py-2 px-4 rounded hover:bg-blue-400">
+                        v-if="!isAdmin && user"
+                        class="bg-blue-500 text-white font-medium py-2 px-4 rounded hover:bg-blue-400"
+                        @click="unsubscribe">
                         Unsubscribe
                     </button>
 
